@@ -36,13 +36,19 @@
 				emulateJSON: true
 			}).then((response) => {
 				var data = response.data
-				this.body = data.body.replace(/src="http/g,'src="'+Tin+'/pic?img=http');
 				this.title = data.title;
-				this.image = data.image;
-				this.styleImage = {
-					backgroundImage: 'url('+Tin+'/pic?img='+this.image
-				}
 				this.headerTitle = this.title
+				this.body = data.body.replace(/src="http/g,'src="'+Tin+'/pic?img=http');
+				this.image = data.image;
+				if (this.image === undefined) {
+					this.styleImage = {
+						backgroundColor: '#f2f2f2'
+					}
+				}else {
+					this.styleImage = {
+						backgroundImage: 'url('+Tin+'/pic?img='+this.image
+					}
+				}
 			}, (response) => {
 				console.warn('error'+response)
 			})

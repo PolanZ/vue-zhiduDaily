@@ -6,14 +6,14 @@
 				<div class="userHead"></div>
 				<div class="userName">Polan</div>
 			</div>
-			<ul>
-				<li class="home">
-					首页
-				</li>
-				<li v-for="item in list">
-					{{ item.name }}
-				</li>
-			</ul>
+			<div class="list">
+				<router-link class="active" to="/home" :replace="true">
+					<span @click="close">首页</span>
+				</router-link>
+				<router-link v-for="item in list" :to="'/theme?id='+item.id" :replace="true">
+					<span @click="close">{{ item.name }}</span>
+				</router-link>
+			</div>
 		</div>
 	</div>
 </template>
@@ -21,7 +21,7 @@
 <style scoped>
 	.sidebar {
 		position: fixed;
-		left: 0;
+		left: -100%;
 		right: 0;
 		top: 0;
 		bottom: 0;
@@ -45,7 +45,7 @@
 	}
 	.sidebarContainer {
 		position: absolute;
-		left: -100%;
+		left: 0;
 		top: 0;
 		width: 60%;
 		height: 100%;
@@ -59,17 +59,24 @@
 		display: block;
 	}
 	.sidebar.active-in-view .bg {
-		/*opacity: 1;*/
-		-webkit-animation: fadeIn .25s ease-in-out forwards;
-		animation: fadeIn .25s ease-in-out forwards;
+		-webkit-animation: fadeIn .25s ease-in-out .25s forwards;
+		animation: fadeIn .25s ease-in-out .25s forwards;
 	}
-	.sidebar.active-in-view .sidebarContainer {
-		/*left: 0;*/
+	.sidebar.active-in-view {
 		-webkit-animation: sideIn .25s ease-in-out forwards;
 		animation: sideIn .25s ease-in-out forwards;
 	}
+
 	.sidebar.active-out-view {
 		display: none;
+	}
+	.sidebar.active-out-view .bg {
+		-webkit-animation: fadeOut .25s ease-in-out forwards;
+		animation: fadeOut .25s ease-in-out forwards;
+	}
+	.sidebar.active-out-view {
+		-webkit-animation: sideOut .25s ease-in-out forwards;
+		animation: sideOut .25s ease-in-out forwards;
 	}
 
 	.sidebarContainer .header {
@@ -93,25 +100,41 @@
 		color: #fff;
 	}
 
-	.sidebarContainer ul {
-		list-style: none;
+	.sidebarContainer .list {
+		/*list-style: none;*/
 		margin: 10px 0;
 		padding-left: 0 !important;
 	}
-	.sidebarContainer ul li {
+	.sidebarContainer .list a {
+		display: block;
+		color: #333;
+	}
+	.sidebarContainer .list a > span {
+		display: block;
 		padding: .6rem 1.2rem;
 	}
-	.sidebarContainer ul li:active {
+	.sidebarContainer .list a:active {
 		background-color: #eee;
+	}
+	.sidebarContainer .list a.active {
+		background-color: #e9e9e9;
 	}
 
 	@keyframes fadeIn {
-		0% {opacity: 0}
-		100% {opacity: 1}
+		0% {opacity: 0;}
+		100% {opacity: 1;}
 	}
 	@keyframes sideIn {
 		0% {left: -100%}
 		100% {left: 0}
+	}
+	@keyframes fadeOut {
+		0% {opacity: 1;}
+		100% {opacity: 0;}
+	}
+	@keyframes sideOut {
+		0% {left: 0}
+		100% {left: -100%}
 	}
 </style>
 

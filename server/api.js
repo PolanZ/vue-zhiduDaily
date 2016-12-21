@@ -90,6 +90,26 @@ module.exports.requestapi = function(req, res) {
 					    res.end();
 					})
 			break;
+		case '/theme':
+			var _url = `http://news-at.zhihu.com/api/4/theme/${query.id}`
+			request.get(_url)
+		    	   .on('response', function(response) {
+		    	   		var c = "";
+						response.setEncoding('utf8');
+						response.on('data', function(chunk) {
+							c += chunk;
+						});
+						response.on('end', function() {
+							res.writeHead(200, response.headers);
+							res.write(c);
+							res.end();
+						})
+		    	   })
+		    	   .on("error",(e)=>{
+					    console.log(`获取数据失败: ${e.message}`)
+					    res.end();
+					})
+			break;
 		default:
 			res.writeHead(404);
             res.end();

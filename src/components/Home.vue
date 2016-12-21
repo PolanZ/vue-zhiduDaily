@@ -5,7 +5,7 @@
 			<span>今日文章</span>
 			<ul>
 				<li v-for="store in stories">
-					<router-link :to="{path:'/contents', query: {id: store.id}}">
+					<router-link :to="{path:'/contents', query: {id: store.id}}" active-class>
 						<p>{{ store.title }}</p>
 						
 						<img class="listImg" :src="tin+'/pic?img='+store.images[0]" >
