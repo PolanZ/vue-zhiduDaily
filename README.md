@@ -1,6 +1,7 @@
-# project
 
-> A Vue.js project
+# vue-zhiduDaily
+
+> a vuejs zhidu daily purify
 
 ## Build Setup
 
