@@ -1,7 +1,7 @@
 <template>
-	<div id="header" class="header" @click="headerClick">
-		<a class="goBack" v-if="goback" @click="back">&lt;返回</a>
-		<a class="menuIcon" v-else @click="sideOpen"></a>
+	<div id="header" class="header" @click.stop="headerClick">
+		<a class="goBack" v-if="goback" @click.stop="back">&lt;返回</a>
+		<a class="menuIcon" v-else @click.stop="sideOpen"></a>
 		<div class="headerText">{{ title }}</div>
 	</div>
 </template>
@@ -19,6 +19,7 @@
 		/*line-height: 68px;*/
 		background-color: #0e90ff;
 		color: #fff;
+		z-index: 999;
 	}
 	.header .menuIcon {
 		position: relative;

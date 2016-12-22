@@ -1,7 +1,11 @@
 <template>
 	<div class="theme">
 		<pl-header :title="headerTitle" v-on:sideOpen="openSide"></pl-header>
-		<div class="listContent">
+		<transition name="slide-down">
+			<div v-if="loading" class="loading">加载中...</div>
+		</transition>
+		<div class="listContent">	
+			<div v-if="error" class="error">{{error}}</div>
 			<ul>
 				<li v-for="store in stories">
 					<router-link :to="{path:'/contents', query: {id: store.id}}">
@@ -14,8 +18,10 @@
 	</div>
 </template>
 
-<style>
-	
+<style scoped>
+	.theme {
+		padding-top: 3.6rem;
+	}
 </style>
 
 <script>
@@ -28,21 +34,25 @@
 				headerTitle: '主题',
 				stories: [],
 				tin: Tin,
-				route: this.$route
+				loading: false,
+				error: null
 			}
 		},
 		components: {
 			plHeader
 		},
-		route: {
-			data () {
-				console.log('dddd')
-			}
+		watch: {
+			'$route': 'fetchData'
 		},
-		wacth: {
-			route: {
-				handler: function (val, oldVal) {
-					var query = val.query
+		created () {
+			this.fetchData()
+		},
+		methods: {
+			fetchData () {
+				var query = this.$route.query
+				this.error = null
+				this.loading = true
+				if (query.id) {
 					this.$http.get(Tin+'/theme', {
 						params:{
 							id: query.id
@@ -50,29 +60,19 @@
 					},{
 						emulateJSON: true
 					}).then((response) => {
+						this.loading = false
 						var data = response.data
 						this.headerTitle = data.name
 						this.stories = data.stories
+					}, (err) => {
+						this.loading = false
+						this.error = err.message
 					})
-				},
-      	deep: true
-			}
-		},
-		created () {
-			var query = this.$route.query
-			this.$http.get(Tin+'/theme', {
-				params:{
-					id: query.id
+				}else {
+					this.loading = false
+					this.error = "数据加载有错，请检查ID"
 				}
-			},{
-				emulateJSON: true
-			}).then((response) => {
-				var data = response.data
-				this.headerTitle = data.name
-				this.stories = data.stories
-			})
-		},
-		methods: {
+			},
 			openSide () {
 				this.$emit('sideIsOpen')
 			}
