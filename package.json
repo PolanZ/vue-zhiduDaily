@@ -1,7 +1,7 @@
 {
-  "name": "project",
+  "name": "vue-zhiduDaily",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "A Vue.js of zhiduDaily",
   "author": "PolanZ <523608375@qq.com>",
   "private": true,
   "scripts": {
